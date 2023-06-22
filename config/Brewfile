@@ -1,0 +1,11 @@
+brew "openssl"
+
+brew "emacs"
+brew "ffmpeg"
+brew "fzf"
+brew "mediainfo"
+brew "jq"
+brew "yq"
+brew "gh"
+brew "sox"
+brew "yt-dlp"

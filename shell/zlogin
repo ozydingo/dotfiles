@@ -1,0 +1,41 @@
+# enable colorized terminal output
+export CLICOLOR=1
+# Parse display and control chars in the less pager
+export LESS=-R
+# Set default editor for terminal tasks to emacs
+export EDITOR=emacs
+
+# Moved to .zshrc
+eval $(/opt/homebrew/bin/brew shellenv)
+
+### Common dev tool aliases
+alias d="docker"
+alias dc="docker compose"
+alias y="yarn"
+alias n="node"
+alias b="bundle"
+alias k="kubectl"
+alias m="minikube"
+alias mk="minikube kubectl --"
+
+# ssh to ephemeral servers without adding clutter to known_hosts
+alias sshn="ssh -o 'UserKnownHostsFile=/dev/null'"
+
+### PROMPT setup: timestamp, working dir, git branch; input on new line
+source $HOME/script/gitprompt
+setopt PROMPT_SUBST
+
+# git_prompt='[%F{$(git_branch_color)}$(parse_git_branch)%f] %B%F{240}%~%f %# '
+# git_prompt='[%F{$(git_branch_color)}$(parse_git_branch)%f]'
+zsh_colors
+git_prompt() {
+  echo "[%F{$(git_branch_color)}$(parse_git_branch)%f]"
+}
+export PROMPT='[%D{%Y-%m-%d %H:%M:%S}] %F{blue}%d%f $(git_prompt)'$'\n''%F{green}$%f '
+
+export PATH="/Users/andrew/.local/bin:$PATH"
+
+# Add custom functions to shell
+for file in $HOME/script/functions/*; do
+    source "$file"
+done
