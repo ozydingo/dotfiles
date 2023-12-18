@@ -1,0 +1,17 @@
+[user]
+	email = andrew@3playmedia.com
+	name = Andrew Schwartz
+[rebase]
+	autosquash = true
+[rerere]
+	enabled = true
+[merge]
+	conflictstyle = diff3
+[alias]
+	ll = log --pretty=format:\"%Cred%h%Creset %Cgreen%cs %C(blue)%<(24)%an%Creset %s %C(magenta)%d%Creset\" --abbrev-commit
+	clean-branches = "!f() { \
+          git fetch -p; \
+          git branch -vv | \
+            grep -E '[[:alnum:][:punct:]]+: gone]' | awk '{print $1}' | \
+            xargs git branch -D; \
+        }; f"
