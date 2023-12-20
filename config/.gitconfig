@@ -15,3 +15,6 @@
             grep -E '[[:alnum:][:punct:]]+: gone]' | awk '{print $1}' | \
             xargs git branch -D; \
         }; f"
+  clean-merged = "!f() { \
+          git branch --merged ${1-main} | grep -v " ${1-main}$" | xargs -r git branch -d; \
+        }; f"
