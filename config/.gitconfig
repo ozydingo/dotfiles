@@ -18,3 +18,4 @@
   clean-merged = "!f() { \
           git branch --merged ${1-main} | grep -v " ${1-main}$" | xargs -r git branch -d; \
         }; f"
+  push-to-origin = push -u origin HEAD
