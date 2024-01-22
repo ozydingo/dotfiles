@@ -19,3 +19,6 @@
           git branch --merged ${1-main} | grep -v " ${1-main}$" | xargs -r git branch -d; \
         }; f"
   push-origin = push -u origin HEAD
+  recent = "!f() { \
+              PAGER=cat git ll -n 15; \
+            }; f"
