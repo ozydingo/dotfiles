@@ -13,7 +13,7 @@
               PAGER=cat git ll -n ${1-15}; \
             }; f"
   lb = "!f() { \
-          PAGER=cat git ll main..; \
+          PAGER=cat git ll --reverse main..; \
         }; f"
 	clean-branches = "!f() { \
           git fetch -p; \
