@@ -20,5 +20,5 @@
         }; f"
   push-origin = push -u origin HEAD
   recent = "!f() { \
-              PAGER=cat git ll -n 15; \
+              PAGER=cat git ll -n ${1-15}; \
             }; f"
