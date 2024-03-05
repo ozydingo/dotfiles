@@ -25,3 +25,4 @@
           git branch --merged ${1-main} | grep -v " ${1-main}$" | xargs -r git branch -d; \
         }; f"
   push-origin = push -u origin HEAD
+  stash-unstaged = stash -u --keep-index
