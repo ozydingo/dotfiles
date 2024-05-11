@@ -35,7 +35,7 @@ prompt_status_badge() {
   fi
 }
 
-export PROMPT='[%D{%Y-%m-%d %H:%M:%S}] $(prompt_status_badge) %F{blue}%d%f $(git_prompt)'$'\n''%F{green}$%f '
+export PROMPT='[%D{%Y-%m-%d %H:%M:%S}] $(prompt_status_badge) %F{blue}%~%f $(git_prompt)'$'\n''%F{green}$%f '
 
 
 # Activate pure prompt
