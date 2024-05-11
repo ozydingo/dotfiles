@@ -5,9 +5,6 @@ export LESS=-R
 # Set default editor for terminal tasks to emacs
 export EDITOR=emacs
 
-# Moved to .zshrc
-eval $(/opt/homebrew/bin/brew shellenv)
-
 ### Common dev tool aliases
 alias d="docker"
 alias dc="docker compose"
@@ -15,23 +12,38 @@ alias y="yarn"
 alias n="node"
 alias b="bundle"
 alias k="kubectl"
-alias m="minikube"
-alias mk="minikube kubectl --"
+# alias m="minikube"
+# alias mk="minikube kubectl --"
+alias gl="git log --pretty=format:'%Cred%h%Creset %Cgreen%cs %C(blue)%<(24)%an%Creset %s %C(magenta)%d%Creset' --abbrev-commit"
 
 # ssh to ephemeral servers without adding clutter to known_hosts
 alias sshn="ssh -o 'UserKnownHostsFile=/dev/null'"
 
-### PROMPT setup: timestamp, working dir, git branch; input on new line
 source $HOME/script/gitprompt
-setopt PROMPT_SUBST
-
-# git_prompt='[%F{$(git_branch_color)}$(parse_git_branch)%f] %B%F{240}%~%f %# '
-# git_prompt='[%F{$(git_branch_color)}$(parse_git_branch)%f]'
 zsh_colors
+
+### PROMPT setup: timestamp, working dir, git branch; input on new line
+setopt PROMPT_SUBST
 git_prompt() {
   echo "[%F{$(git_branch_color)}$(parse_git_branch)%f]"
 }
-export PROMPT='[%D{%Y-%m-%d %H:%M:%S}] %F{blue}%d%f $(git_prompt)'$'\n''%F{green}$%f '
+prompt_status_badge() {
+  if [ $? -eq 0 ]; then
+    echo "%F{green}✔%f"
+  else
+    echo "%F{red}✘%f"
+  fi
+}
+
+export PROMPT='[%D{%Y-%m-%d %H:%M:%S}] $(prompt_status_badge) %F{blue}%d%f $(git_prompt)'$'\n''%F{green}$%f '
+
+
+# Activate pure prompt
+# autoload -U promptinit; promptinit
+# prompt pure
+
+# export PROMPT="%F{${prompt_pure_colors[path]}}%~%f
+# %}%(12V.%F{$prompt_pure_colors[virtualenv]}%12v%f .)%(?.%F{$prompt_pure_colors[prompt:success]}.%F{$prompt_pure_colors[prompt:error]})${prompt_pure_state[prompt]}%f"
 
 export PATH="/Users/andrew/.local/bin:$PATH"
 
@@ -39,3 +51,6 @@ export PATH="/Users/andrew/.local/bin:$PATH"
 for file in $HOME/script/functions/*; do
     source "$file"
 done
+
+# $PROMPT references the last exit code; make this true on a new terminal
+true
