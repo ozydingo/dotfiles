@@ -10,3 +10,6 @@ install:
 
 	cp shell/gitprompt $(HOME)/script/gitprompt
 	cp shell/functions/ys $(HOME)/script/functions/ys
+
+	gh alias set ai --clobber "copilot suggest -t shell"
+	gh alias set explain --clobber "copilot explain"
