@@ -15,6 +15,7 @@
   lb = "!f() { \
           PAGER=cat git ll --reverse main..; \
         }; f"
+  branch-files="diff --merge-base --name-status main"
 	clean-branches = "!f() { \
           git fetch -p; \
           git branch -vv | \
