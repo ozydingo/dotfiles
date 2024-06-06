@@ -8,6 +8,10 @@
 [merge]
 	conflictstyle = diff3
 [alias]
+  alias="!f() { git config alias.$1; }; f"
+  aliases = "!f() { \
+              git config --list | grep -E '^alias\\.' | awk -F '=' '{print $1}' | sed 's/alias\\.//g'; \
+            }; f"
 	ll = log --pretty=format:\"%Cred%h%Creset %Cgreen%cs %C(blue)%<(24)%an%Creset %s %C(magenta)%d%Creset\" --abbrev-commit
   recent = "!f() { \
               PAGER=cat git ll -n ${1-15}; \
@@ -15,7 +19,7 @@
   lb = "!f() { \
           PAGER=cat git ll --reverse main..; \
         }; f"
-  branch-files="diff --merge-base --name-status main"
+  branch-files = "diff --merge-base --name-status main"
 	clean-branches = "!f() { \
           git fetch -p; \
           git branch -vv | \
@@ -25,5 +29,6 @@
   clean-merged = "!f() { \
           git branch --merged ${1-main} | grep -v " ${1-main}$" | xargs -r git branch -d; \
         }; f"
+  dir = "rev-parse --show-toplevel"
   push-origin = push -u origin HEAD
   stash-unstaged = stash -u --keep-index
