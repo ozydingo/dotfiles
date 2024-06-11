@@ -16,6 +16,9 @@
   recent = "!f() { \
               PAGER=cat git ll -n ${1-15}; \
             }; f"
+  rr = "!f() { \
+              git reflog --pretty=format:\"%d\" --abbrev-commit | head -200 | grep -vE '^$' |  uniq | head -25; \
+            }; f"
   lb = "!f() { \
           PAGER=cat git ll --reverse main..; \
         }; f"
