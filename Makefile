@@ -11,5 +11,5 @@ install:
 	cp shell/gitprompt $(HOME)/script/gitprompt
 	cp shell/functions/ys $(HOME)/script/functions/ys
 
-	gh alias set ai --clobber "copilot suggest -t shell"
-	gh alias set explain --clobber "copilot explain"
+	@gh copilot -h &> /dev/null && gh alias set ai --clobber "copilot suggest -t shell" || echo "copilot not found; skipping"
+	@gh copilot -h &> /dev/null && gh alias set explain --clobber "copilot explain" || echo "copilot not found; skipping"
