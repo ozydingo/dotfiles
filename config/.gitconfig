@@ -12,6 +12,7 @@
   aliases = "!f() { \
               git config --list | grep -E '^alias\\.' | awk -F '=' '{print $1}' | sed 's/alias\\.//g'; \
             }; f"
+  cb = "rev-parse --abbrev-ref HEAD"
 	ll = log --pretty=format:\"%Cred%h%Creset %Cgreen%cs %C(blue)%<(24)%an%Creset %s %C(magenta)%d%Creset\" --abbrev-commit
   recent = "!f() { \
               PAGER=cat git ll -n ${1-15}; \
