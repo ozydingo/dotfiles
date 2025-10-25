@@ -1,5 +1,5 @@
 [user]
-	email = andrew@3playmedia.com
+	email = ozydingo@gmail.com
 	name = Andrew Schwartz
 [rebase]
 	autosquash = true
@@ -8,31 +8,56 @@
 [merge]
 	conflictstyle = diff3
 [alias]
+  # Show an alias
   alias="!f() { git config alias.$1; }; f"
+  # Show all aliases
   aliases = "!f() { \
               git config --list | grep -E '^alias\\.' | awk -F '=' '{print $1}' | sed 's/alias\\.//g'; \
             }; f"
-  cb = "rev-parse --abbrev-ref HEAD"
-	ll = log --pretty=format:\"%Cred%h%Creset %Cgreen%cs %C(blue)%<(24)%an%Creset %s %C(magenta)%d%Creset\" --abbrev-commit
-  recent = "!f() { \
-              PAGER=cat git ll -n ${1-15}; \
+  # Show current branch name -- !git needed because git thinks this command modifies ENV
+  cb = "!git --no-pager branch --format='%(refname:short)' "
+  # Show current head
+  head = "rev-parse --abbrev-ref HEAD"
+  # Simplified log
+	l = log --pretty=format:\"%Cred%h%Creset %Cgreen%cs %C(blue)%<(24)%an%Creset %s %C(magenta)%d%Creset\" --abbrev-commit
+  # Recent commits with simplified log format
+  recent = "!git --no-pager l -n ${1-15}"
+  # Show recent checkouts from reflog
+  # %gs: Reflog subject, including `checkout:` or other commands
+  # %ar: Relative author date (e.g., "2 days ago")
+  breadcrumbs = "!f() { \
+              inbound=$((${1-25} * 10)); \
+              git --no-pager reflog --color=always --pretty=format:\"%gs (%ar)\" -n $inbound \
+               | grep 'checkout:'\
+               | head -${1-25}; \
             }; f"
-  rr = "!f() { \
-              git reflog --pretty=format:\"%d\" --abbrev-commit | head -200 | grep -vE '^$' |  uniq | head -25; \
-            }; f"
-  lb = "!f() { \
-          PAGER=cat git ll --reverse main..; \
+  # Show commits in chronological order from main / ref
+  commits = "!f() { \
+          PAGER=cat git ll --reverse ${1-main}..; \
         }; f"
-  branch-files = "diff --merge-base --name-status main"
+  # Show files changed relative to main / ref (merge base)
+  files = "!f() { \
+              git --no-pager diff --merge-base --name-status ${1-main}; \
+            }; f"
+  # Clean up branches that are gone from remote (leaves local-only branches)
 	clean-branches = "!f() { \
           git fetch -p; \
           git branch -vv | \
             grep -E '[[:alnum:][:punct:]]+: gone]' | awk '{print $1}' | \
             xargs git branch -D; \
         }; f"
+  # (Experimental)Clean up branches that are merged into main / ref
   clean-merged = "!f() { \
           git branch --merged ${1-main} | grep -v " ${1-main}$" | xargs -r git branch -d; \
         }; f"
+  # Show top level directory for the git repo
   dir = "rev-parse --show-toplevel"
+  # Simplified push with upstream tracking
   push-origin = push -u origin HEAD
+  # Stash unstaged changes
   stash-unstaged = stash -u --keep-index
+  # (Experimental; not working) Show commit message for a given file
+  match = "!f() { \
+              echo "WARNING: match is experimental and not quite working" >&2; \
+              git rev-parse :/$1 | git show -s | cat; \
+            }; f"

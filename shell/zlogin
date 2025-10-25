@@ -6,18 +6,17 @@ export LESS=-R
 export EDITOR=emacs
 
 ### Common dev tool aliases
+alias b="bundle"
 alias d="docker"
 alias dc="docker compose"
-alias y="yarn"
-alias n="node"
-alias b="bundle"
 alias k="kubectl"
 # alias m="minikube"
 # alias mk="minikube kubectl --"
-alias gl="git log --pretty=format:'%Cred%h%Creset %Cgreen%cs %C(blue)%<(24)%an%Creset %s %C(magenta)%d%Creset' --abbrev-commit"
+alias n="node"
+alias y="yarn"
 
 # ssh to ephemeral servers without adding clutter to known_hosts
-alias sshn="ssh -o 'UserKnownHostsFile=/dev/null'"
+alias ssh0="ssh -o 'UserKnownHostsFile=/dev/null'"
 
 source $HOME/script/gitprompt
 zsh_colors
@@ -45,7 +44,11 @@ export PROMPT='[%D{%Y-%m-%d %H:%M:%S}] $(prompt_status_badge) %F{blue}%~%f $(git
 # export PROMPT="%F{${prompt_pure_colors[path]}}%~%f
 # %}%(12V.%F{$prompt_pure_colors[virtualenv]}%12v%f .)%(?.%F{$prompt_pure_colors[prompt:success]}.%F{$prompt_pure_colors[prompt:error]})${prompt_pure_state[prompt]}%f"
 
-export PATH="/Users/andrew/.local/bin:$PATH"
+if [ -d "/Users/andrew/.local/bin" ]; then
+  if ! echo "$PATH" | grep -q "/Users/andrew/.local/bin"; then
+    export PATH="/Users/andrew/.local/bin:$PATH"
+  fi
+fi
 
 # Add custom functions to shell
 for file in $HOME/script/functions/*; do
