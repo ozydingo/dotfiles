@@ -25,13 +25,13 @@
   # Show recent checkouts from reflog
   # %gs: Reflog subject, including `checkout:` or other commands
   # %ar: Relative author date (e.g., "2 days ago")
+  # Use -- for easy parsing by `sed`
   # \\ needed to escape \ character in command
   # \x1b[33m: yellow
   # \x1b[36m: cyan
   # \x1b[0m: reset
   breadcrumbs = "!f() { \
-              inbound=$((${1-25} * 10)); \
-              git reflog --pretty=format:\"%gs -- (%ar)\" -n $inbound \
+              git reflog --pretty=format:\"%gs -- (%ar)\" \
                | grep 'checkout:'\
                | head -${1-25} \
                | sed 's/checkout: moving from \\(.*\\) to \\(.*\\) --/\\x1b[33m\\1 -> \\x1b[36m\\2\\x1b[0m/g'; \
