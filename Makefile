@@ -3,14 +3,14 @@
 install:
 	mkdir -p $(HOME)/script/functions
 
-	cp shell/zshrc $(HOME)/.zshrc
-	cp shell/zlogin $(HOME)/.zlogin
-	cp config/.gitconfig $(HOME)/.gitconfig
-	cp config/Brewfile $(HOME)/Brewfile
-	cp config/CLAUDE.md $(HOME)/CLAUDE.md
+	cp dotfiles/.zshrc $(HOME)/.zshrc
+	cp dotfiles/.zlogin $(HOME)/.zlogin
+	cp dotfiles/.gitconfig $(HOME)/.gitconfig
+	cp dotfiles/Brewfile $(HOME)/Brewfile
+	cp dotfiles/CLAUDE.md $(HOME)/CLAUDE.md
 
-	cp shell/gitprompt $(HOME)/script/gitprompt
-	cp shell/functions/ys $(HOME)/script/functions/ys
+	cp dotfiles/gitprompt $(HOME)/script/gitprompt
+	cp dotfiles/functions/ys $(HOME)/script/functions/ys
 
 	# @gh copilot -h &> /dev/null && gh alias set ai --clobber "copilot suggest -t shell" || echo "copilot not found; skipping"
 	# @gh copilot -h &> /dev/null && gh alias set explain --clobber "copilot explain" || echo "copilot not found; skipping"
