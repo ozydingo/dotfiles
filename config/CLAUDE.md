@@ -12,6 +12,14 @@ This file contains custom instructions for the Claude CLI.
 
 ## PRs
 
+### Workflow
+
+- Branch off of `main` unless otherwise specified or indicated.
+- Create PRs using the `gh` utility.
+- Always leave the PR in a draft state so that I am able to review it before requesting external review.
+
+### Formatting
+
 When writing a PR, unless otherwise specified or indicated, use a simple WHAT vs WHY format:
 
 ```
