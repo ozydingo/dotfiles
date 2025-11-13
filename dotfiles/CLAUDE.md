@@ -10,13 +10,14 @@ This file contains custom instructions for the Claude CLI.
 
 - When creating a branch within the $HOME/3p directory, prepend the branch name with `ahs_`
 
-## PRs
+## Pull Requests
 
 ### Workflow
 
 - Branch off of `main` unless otherwise specified or indicated.
-- Create PRs using the `gh` utility.
+- Create github pull requests using the `gh` utility.
 - Always leave the PR in a draft state so that I am able to review it before requesting external review.
+- **Always show the PR URL** returned by `gh pr create` so the user can easily navigate to it.
 
 ### Formatting
 
