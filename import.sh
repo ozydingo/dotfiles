@@ -23,19 +23,30 @@ print_color() {
 usage() {
     echo "Usage: $0 <path_to_local_file> [path_to_repo_file]"
     echo ""
+    echo "Import utility to safely copy local files into the repo"
+    echo ""
     echo "If path_to_repo_file is omitted, defaults to dotfiles/<basename>"
+    echo ""
+    echo "Options:"
+    echo "  -h, --help    Show this help message and exit"
     echo ""
     echo "Examples:"
     echo "  $0 ~/.zshrc                    # defaults to dotfiles/.zshrc"
     echo "  $0 ~/CLAUDE.md                 # defaults to dotfiles/CLAUDE.md"
     echo "  $0 ~/.zshrc dotfiles/.zshrc    # explicit path"
-    exit 1
 }
+
+# Check for help flag
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+    usage
+    exit 0
+fi
 
 # Check arguments
 if [ $# -lt 1 ] || [ $# -gt 2 ]; then
     print_color "$RED" "Error: Wrong number of arguments"
     usage
+    exit 1
 fi
 
 LOCAL_FILE="$1"

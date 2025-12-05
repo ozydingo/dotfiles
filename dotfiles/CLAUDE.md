@@ -6,6 +6,11 @@ This file contains custom instructions for the Claude CLI.
 
 - Less is more. Be concise unless prompted otherwise.
 
+## Coding: general
+
+- If prompted to tweak and approach, **ALWAYS** stop to ask the user if the tweak will dramatically complicate the implementation.
+- Beware of scope creep. Implement what was asked for, but prefer suggesting over implementing for anything that adds significant complexity or risk.
+
 ## Git
 
 - When creating a branch within the $HOME/3p directory, prepend the branch name with `ahs_`
