@@ -44,6 +44,13 @@
   files = "!f() { \
               git --no-pager diff --merge-base --name-status ${1-main}; \
             }; f"
+  fresh = "!f() { \
+              git diff-index --quiet HEAD || { echo 'Error: uncommitted changes detected. Commit or stash your changes first.' >&2; return 1; }; \
+              git fetch --all --prune --tags; \
+              git switch main; \
+              git pull; \
+              git clean-branches; \
+            }; f"
   # Clean up branches that are gone from remote (leaves local-only branches)
 	clean-branches = "!f() { \
           git fetch -p; \
