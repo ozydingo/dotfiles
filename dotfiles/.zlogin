@@ -1,4 +1,4 @@
-# enable colorized terminal output
+a# enable colorized terminal output
 export CLICOLOR=1
 # Parse display and control chars in the less pager
 export LESS=-R
@@ -14,6 +14,9 @@ alias k="kubectl"
 # alias mk="minikube kubectl --"
 alias n="node"
 alias y="yarn"
+
+## docker compose does not support custom aliases, so we rely on bash aliases instead
+alias dcps='docker compose ps --format "table {{.Name}}\t{{.Service}}\t{{.Status}}"'
 
 # ssh to ephemeral servers without adding clutter to known_hosts
 alias ssh0="ssh -o 'UserKnownHostsFile=/dev/null'"
