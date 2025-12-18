@@ -1,4 +1,4 @@
-a# enable colorized terminal output
+# enable colorized terminal output
 export CLICOLOR=1
 # Parse display and control chars in the less pager
 export LESS=-R
