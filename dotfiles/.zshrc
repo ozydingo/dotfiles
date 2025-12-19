@@ -1,5 +1,6 @@
 # Activate asdf tool manager
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
+# Obsolete as of late 2025?
+#. /opt/homebrew/opt/asdf/libexec/asdf.sh
 
 # Set up homebrew
 eval $(/opt/homebrew/bin/brew shellenv)
