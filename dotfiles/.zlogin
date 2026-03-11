@@ -21,6 +21,8 @@ alias dcps='docker compose ps --format "table {{.Name}}\t{{.Service}}\t{{.Status
 # ssh to ephemeral servers without adding clutter to known_hosts
 alias ssh0="ssh -o 'UserKnownHostsFile=/dev/null'"
 
+[ -f "$HOME/.zlogin.local" ] && source "$HOME/.zlogin.local"
+
 source $HOME/script/gitprompt
 zsh_colors
 

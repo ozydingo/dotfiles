@@ -5,6 +5,9 @@ install:
 
 	cp dotfiles/.zshrc $(HOME)/.zshrc
 	cp dotfiles/.zlogin $(HOME)/.zlogin
+	@if [ "$$(hostname -s)" = "3PLAY-ML-ASchwartz" ]; then \
+		cp dotfiles/.zlogin.local.3PLAY-ML-ASchwartz $(HOME)/.zlogin.local; \
+	fi
 	cp dotfiles/.gitconfig $(HOME)/.gitconfig
 	cp dotfiles/Brewfile $(HOME)/Brewfile
 	cp dotfiles/CLAUDE.md $(HOME)/CLAUDE.md
