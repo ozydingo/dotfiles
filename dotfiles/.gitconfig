@@ -50,6 +50,7 @@
               git switch main; \
               git pull; \
               git clean-branches; \
+              clear; \
             }; f"
   # Clean up branches that are gone from remote (leaves local-only branches)
 	clean-branches = "!f() { \
