@@ -7,6 +7,12 @@ install:
 	cp dotfiles/.zlogin $(HOME)/.zlogin
 	@if [ "$$(hostname -s)" = "3PLAY-ML-ASchwartz" ]; then \
 		cp dotfiles/.zlogin.local.3PLAY-ML-ASchwartz $(HOME)/.zlogin.local; \
+		echo ""; \
+		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"; \
+		echo "!!! WARNING: app3-specific local dotfile additions were overwritten. !!!"; \
+		echo "!!! Re-run the app3 dev setup script now to restore local additions. !!!"; \
+		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"; \
+		echo ""; \
 	fi
 	cp dotfiles/.gitconfig $(HOME)/.gitconfig
 	cp dotfiles/Brewfile $(HOME)/Brewfile
