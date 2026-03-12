@@ -54,11 +54,12 @@
             }; f"
   # Clean up branches that are gone from remote (leaves local-only branches)
 	clean-branches = "!f() { \
-          git fetch -p; \
-          git branch -vv | \
-            grep -E '[[:alnum:][:punct:]]+: gone]' | awk '{print $1}' | \
-            xargs git branch -D; \
-        }; f"
+      git fetch -p && \
+      git for-each-ref \
+        --format '%(refname:short) %(upstream:track)' refs/heads/ | \
+      awk '/\\[gone\\]/ {print $1}' | \
+      xargs -n 1 git branch -D 2>&1; \
+    }; f"
   # (Experimental)Clean up branches that are merged into main / ref
   clean-merged = "!f() { \
           git branch --merged ${1-main} | grep -v " ${1-main}$" | xargs -r git branch -d; \
