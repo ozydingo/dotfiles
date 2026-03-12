@@ -5,8 +5,8 @@ install:
 
 	cp dotfiles/.zshrc $(HOME)/.zshrc
 	cp dotfiles/.zlogin $(HOME)/.zlogin
-	@if [ "$$(hostname -s)" = "3PLAY-ML-ASchwartz" ]; then \
-		cp dotfiles/.zlogin.local.3PLAY-ML-ASchwartz $(HOME)/.zlogin.local; \
+	@if echo "$$(hostname -s)" | grep -qi "3play"; then \
+		cp local/3play/.zlogin.local $(HOME)/.zlogin.local; \
 		echo ""; \
 		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"; \
 		echo "!!! WARNING: app3-specific local dotfile additions were overwritten. !!!"; \
