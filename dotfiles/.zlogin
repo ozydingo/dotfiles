@@ -21,8 +21,6 @@ alias dcps='docker compose ps --format "table {{.Name}}\t{{.Service}}\t{{.Status
 # ssh to ephemeral servers without adding clutter to known_hosts
 alias ssh0="ssh -o 'UserKnownHostsFile=/dev/null'"
 
-[ -f "$HOME/.zlogin.local" ] && source "$HOME/.zlogin.local"
-
 source $HOME/script/gitprompt
 zsh_colors
 
@@ -49,9 +47,9 @@ export PROMPT='[%D{%Y-%m-%d %H:%M:%S}] $(prompt_status_badge) %F{blue}%~%f $(git
 # export PROMPT="%F{${prompt_pure_colors[path]}}%~%f
 # %}%(12V.%F{$prompt_pure_colors[virtualenv]}%12v%f .)%(?.%F{$prompt_pure_colors[prompt:success]}.%F{$prompt_pure_colors[prompt:error]})${prompt_pure_state[prompt]}%f"
 
-if [ -d "/Users/andrew/.local/bin" ]; then
-  if ! echo "$PATH" | grep -q "/Users/andrew/.local/bin"; then
-    export PATH="/Users/andrew/.local/bin:$PATH"
+if [ -d "${HOME}/.local/bin" ]; then
+  if ! echo "$PATH" | grep -q "${HOME}/.local/bin"; then
+    export PATH="${HOME}/.local/bin:$PATH"
   fi
 fi
 
@@ -59,6 +57,8 @@ fi
 for file in $HOME/script/functions/*; do
     source "$file"
 done
+
+[ -f "$HOME/.zlogin.local" ] && source "$HOME/.zlogin.local"
 
 # $PROMPT references the last exit code; make this true on a new terminal
 true
