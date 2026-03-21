@@ -16,6 +16,7 @@
 ## Git
 
 - When making a new branch, unless the task specifically requires branching off of the current branch, branch from a fresh pull of the default branch (usually `main`).
+- Do **NOT** include "Co-Authored-By: Claude" in the commit message.
 
 ## Pull Requests
 
