@@ -4,8 +4,8 @@ install: shell git claude brew
 
 shell:
 	mkdir -p $(HOME)/script/functions
-	cp dotfiles/.zshrc $(HOME)/.zshrc
-	cp dotfiles/.zlogin $(HOME)/.zlogin
+	cp home/.zshrc $(HOME)/.zshrc
+	cp home/.zlogin $(HOME)/.zlogin
 	@if echo "$$(hostname -s)" | grep -qi "3play"; then \
 		cp local/3play/.zlogin.local $(HOME)/.zlogin.local; \
 		echo ""; \
@@ -15,18 +15,18 @@ shell:
 		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"; \
 		echo ""; \
 	fi
-	cp dotfiles/gitprompt $(HOME)/script/gitprompt
-	cp dotfiles/functions/ys $(HOME)/script/functions/ys
+	cp home/gitprompt $(HOME)/script/gitprompt
+	cp home/functions/ys $(HOME)/script/functions/ys
 
 git:
-	cp dotfiles/.gitconfig $(HOME)/.gitconfig
+	cp home/.gitconfig $(HOME)/.gitconfig
 
 claude:
-	cp dotfiles/CLAUDE.md $(HOME)/CLAUDE.md
-	cp -r dotfiles/dot-claude $(HOME)/.claude
+	cp home/CLAUDE.md $(HOME)/CLAUDE.md
+	cp -r home/dot-claude $(HOME)/.claude
 
 brew:
-	cp dotfiles/Brewfile $(HOME)/Brewfile
+	cp home/Brewfile $(HOME)/Brewfile
 
 activate: shell
 	source $(HOME)/.zlogin

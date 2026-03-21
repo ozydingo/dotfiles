@@ -25,15 +25,15 @@ usage() {
     echo ""
     echo "Import utility to safely copy local files into the repo"
     echo ""
-    echo "If path_to_repo_file is omitted, defaults to dotfiles/<basename>"
+    echo "If path_to_repo_file is omitted, defaults to home/<basename>"
     echo ""
     echo "Options:"
     echo "  -h, --help    Show this help message and exit"
     echo ""
     echo "Examples:"
-    echo "  $0 ~/.zshrc                    # defaults to dotfiles/.zshrc"
-    echo "  $0 ~/CLAUDE.md                 # defaults to dotfiles/CLAUDE.md"
-    echo "  $0 ~/.zshrc dotfiles/.zshrc    # explicit path"
+    echo "  $0 ~/.zshrc                    # defaults to home/.zshrc"
+    echo "  $0 ~/CLAUDE.md                 # defaults to home/CLAUDE.md"
+    echo "  $0 ~/.zshrc home/.zshrc    # explicit path"
 }
 
 # Check for help flag
@@ -51,12 +51,12 @@ fi
 
 LOCAL_FILE="$1"
 
-# Default to dotfiles/<basename> if second arg not provided
+# Default to home/<basename> if second arg not provided
 if [ $# -eq 2 ]; then
     REPO_FILE="$2"
 else
     BASENAME=$(basename "$LOCAL_FILE")
-    REPO_FILE="dotfiles/$BASENAME"
+    REPO_FILE="home/$BASENAME"
     print_color "$BLUE" "→ Defaulting to repo file: $REPO_FILE"
     echo ""
 fi
