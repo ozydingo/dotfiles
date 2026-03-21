@@ -1,8 +1,8 @@
-.PHONY: install install-shell install-git install-claude install-brew activate
+.PHONY: install shell git claude brew activate
 
-install: install-shell install-git install-claude install-brew
+install: shell git claude brew
 
-install-shell:
+shell:
 	mkdir -p $(HOME)/script/functions
 	cp dotfiles/.zshrc $(HOME)/.zshrc
 	cp dotfiles/.zlogin $(HOME)/.zlogin
@@ -18,15 +18,15 @@ install-shell:
 	cp dotfiles/gitprompt $(HOME)/script/gitprompt
 	cp dotfiles/functions/ys $(HOME)/script/functions/ys
 
-install-git:
+git:
 	cp dotfiles/.gitconfig $(HOME)/.gitconfig
 
-install-claude:
+claude:
 	cp dotfiles/CLAUDE.md $(HOME)/CLAUDE.md
 	cp -r dotfiles/dot-claude $(HOME)/.claude
 
-install-brew:
+brew:
 	cp dotfiles/Brewfile $(HOME)/Brewfile
 
-activate: install-shell
+activate: shell
 	source $(HOME)/.zlogin
