@@ -15,7 +15,6 @@
 
 ## Git
 
-- When creating a branch within the $HOME/3p directory, prepend the branch name with `ahs_`
 - Branch off of the default branck (usually `main`) unless otherwise specified or indicated.
 
 ## Pull Requests

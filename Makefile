@@ -17,6 +17,7 @@ install:
 	cp dotfiles/.gitconfig $(HOME)/.gitconfig
 	cp dotfiles/Brewfile $(HOME)/Brewfile
 	cp dotfiles/CLAUDE.md $(HOME)/CLAUDE.md
+	cp -r dotfiles/dot-claude $(HOME)/.claude
 
 	cp dotfiles/gitprompt $(HOME)/script/gitprompt
 	cp dotfiles/functions/ys $(HOME)/script/functions/ys
