@@ -22,3 +22,14 @@ fi
 [[ "$PATH" == *"$HOME/bin:"* ]] || export PATH="$HOME/bin:$PATH"
 
 ! { which werf | grep -qsE "^$HOME/.trdl/"; } && [[ -x "$HOME/bin/trdl" ]] && source $("$HOME/bin/trdl" use werf "1.2" "stable")
+
+MARKER="# Directory-local shell hooks"
+if [[ -f ~/.zshrc ]] && ! grep -Fq "$MARKER" ~/.zshrc 2>/dev/null; then
+  echo -e "\n$MARKER
+  # Sources .shell-hook.sh in current directory if it exists (runs on every prompt)
+  # Hooks should be lightweight and idempotent
+  __dir_shell_hook() {
+      [[ -f .shell-hook.sh ]] && source .shell-hook.sh
+  }
+  precmd_functions+=(__dir_shell_hook)" >> ~/.zshrc
+fi
