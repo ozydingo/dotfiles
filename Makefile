@@ -1,8 +1,9 @@
-.PHONY: install
+.PHONY: install install-shell install-git install-claude install-brew activate
 
-install:
+install: install-shell install-git install-claude install-brew
+
+install-shell:
 	mkdir -p $(HOME)/script/functions
-
 	cp dotfiles/.zshrc $(HOME)/.zshrc
 	cp dotfiles/.zlogin $(HOME)/.zlogin
 	@if echo "$$(hostname -s)" | grep -qi "3play"; then \
@@ -14,16 +15,18 @@ install:
 		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"; \
 		echo ""; \
 	fi
-	cp dotfiles/.gitconfig $(HOME)/.gitconfig
-	cp dotfiles/Brewfile $(HOME)/Brewfile
-	cp dotfiles/CLAUDE.md $(HOME)/CLAUDE.md
-	cp -r dotfiles/dot-claude $(HOME)/.claude
-
 	cp dotfiles/gitprompt $(HOME)/script/gitprompt
 	cp dotfiles/functions/ys $(HOME)/script/functions/ys
 
-	@# @gh copilot -h &> /dev/null && gh alias set ai --clobber "copilot suggest -t shell" || echo "copilot not found; skipping"
-	@# @gh copilot -h &> /dev/null && gh alias set explain --clobber "copilot explain" || echo "copilot not found; skipping"
+install-git:
+	cp dotfiles/.gitconfig $(HOME)/.gitconfig
 
-activate: install
+install-claude:
+	cp dotfiles/CLAUDE.md $(HOME)/CLAUDE.md
+	cp -r dotfiles/dot-claude $(HOME)/.claude
+
+install-brew:
+	cp dotfiles/Brewfile $(HOME)/Brewfile
+
+activate: install-shell
 	source $(HOME)/.zlogin
