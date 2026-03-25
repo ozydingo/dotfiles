@@ -1,6 +1,6 @@
-.PHONY: install shell git claude brew activate
+.PHONY: install shell git brew activate
 
-install: shell git claude brew
+install: shell git brew
 
 shell:
 	mkdir -p $(HOME)/script/functions
@@ -20,10 +20,6 @@ shell:
 
 git:
 	cp home/.gitconfig $(HOME)/.gitconfig
-
-claude:
-	cp home/CLAUDE.md $(HOME)/CLAUDE.md
-	cp -r home/dot-claude $(HOME)/.claude
 
 brew:
 	cp home/Brewfile $(HOME)/Brewfile
