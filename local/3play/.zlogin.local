@@ -1,2 +1,1 @@
-agent(){ cd "$HOME/3p/app3-workspaces/app3-agent$1" && claude; }
-
+agent(){ cd "$HOME/3p/app3-workspaces/app3-agent$1" }
