@@ -70,6 +70,8 @@
   push-origin = push -u origin HEAD
   # Stash unstaged changes
   stash-unstaged = stash -u --keep-index
+  # worktree alias
+  wt = "worktree"
   # (Experimental; not working) Show commit message for a given file
   match = "!f() { \
               echo "WARNING: match is experimental and not quite working" >&2; \
