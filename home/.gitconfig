@@ -19,7 +19,7 @@
   # Show current head
   head = "rev-parse --abbrev-ref HEAD"
   # Simplified log
-	l = log --pretty=format:\"%Cred%h%Creset %Cgreen%cs %C(blue)%<(24)%an%Creset %s %C(magenta)%d%Creset\" --abbrev-commit
+  l = log --pretty=format:\"%Cred%h%Creset %Cgreen%cs %C(blue)%<(24)%an%Creset %s %C(magenta)%d%Creset\" --abbrev-commit
   # Recent commits with simplified log format
   recent = "!git --no-pager l -n ${1-15}"
   # Show recent checkouts from reflog
@@ -66,6 +66,15 @@
         }; f"
   # Show top level directory for the git repo
   dir = "rev-parse --show-toplevel"
+  # Show worktree parten
+  worktree-parent = "rev-parse --git-common-dir"
+  # return success if is worktree
+  is-worktree = "!f() { \
+    dir=$(git rev-parse --git-dir 2>/dev/null); \
+    common=$(git rev-parse --git-common-dir 2>/dev/null); \
+    [ "$dir" != "$common" ]; \
+  }; f"
+
   # Simplified push with upstream tracking
   push-origin = push -u origin HEAD
   # Stash unstaged changes
