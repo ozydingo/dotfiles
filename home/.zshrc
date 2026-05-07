@@ -10,13 +10,13 @@ if [[ -d "$asdf_dir" && "$PATH" != *"$asdf_dir/shims"* ]]; then
 fi
 
 # Add Google Cloud SDK to PATH.
-if [ -f '$HOME/.local/google-cloud-sdk/path.zsh.inc' ]; then
-    . '$HOME/.local/google-cloud-sdk/path.zsh.inc'
+if [ -f "$HOME/bin/google-cloud-sdk/path.zsh.inc" ]; then
+    . "$HOME/bin/google-cloud-sdk/path.zsh.inc"
 fi
 
 # Add shell command completion for Google Cloud SDK.
-# if [ -f '$HOME/.local/google-cloud-sdk/completion.zsh.inc' ]; then
-#     . '$HOME/.local/google-cloud-sdk/completion.zsh.inc'
+# if [ -f '$HOME/bin/google-cloud-sdk/completion.zsh.inc' ]; then
+#     . '$HOME/bin/google-cloud-sdk/completion.zsh.inc'
 # fi
 
 [[ "$PATH" == *"$HOME/bin:"* ]] || export PATH="$HOME/bin:$PATH"
