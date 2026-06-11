@@ -50,15 +50,15 @@
               git switch main; \
               git pull; \
               git clean-branches; \
-              clear; \
             }; f"
+  clear = "!f() { git fresh; clear; }; f"
   # Clean up branches that are gone from remote (leaves local-only branches)
-	clean-branches = "!f() { \
-      git fetch -p && \
-      git for-each-ref \
+  clean-branches = "!f() { \
+        git fetch -p && \
+        git for-each-ref \
         --format '%(refname:short) %(upstream:track)' refs/heads/ | \
-      awk '/\\[gone\\]/ {print $1}' | \
-      xargs -n 1 git branch -D 2>&1; \
+        awk '/\\[gone\\]/ {print $1}' | \
+        xargs -n 1 git branch -D 2>&1; \
     }; f"
   # (Experimental)Clean up branches that are merged into main / ref
   clean-merged = "!f() { \
