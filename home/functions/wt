@@ -1,9 +1,11 @@
 # git worktree helper with subcommands. Falls through to `git worktree` for
 # anything it doesn't handle, so `wt add`, `wt remove`, `wt prune`, ... just work.
-#   wt                    → list worktrees
-#   wt find <name|branch> → print the worktree path (name preferred; nonzero if none)
-#   wt goto [name|branch] → cd into a worktree (name preferred; fzf-pick if omitted)
-#   wt <cmd> [args]       → passthrough to `git worktree <cmd> [args]`
+#   wt                       → list worktrees
+#   wt find <name|branch|sub> → print a worktree path; matches exact name, then
+#                               exact branch, then a unique substring of either
+#   wt goto [name|branch|sub] → cd into a worktree; exact match jumps directly,
+#                               otherwise fzf opens seeded with the query
+#   wt <cmd> [args]           → passthrough to `git worktree <cmd> [args]`
 function wt() {
   if ! git rev-parse --git-dir >/dev/null 2>&1; then
     echo "Error: not inside a git repository" >&2 && return 1
@@ -21,26 +23,35 @@ function wt() {
       git wt-find "$@"
       ;;
     goto)
-      local q="$1" dir picked
-      if [[ -z "$q" ]]; then
-        command -v fzf >/dev/null 2>&1 || { echo "usage: wt goto <name|branch>" >&2; return 2; }
-        # Columns: name <tab> branch <tab> path; show name+branch, cd via the path.
-        picked=$(git worktree list --porcelain | awk '
-          function base(p) { sub(/.*\//, "", p); return p }
-          /^worktree / { path=substr($0, 10); name=base(path); ref="" }
-          /^branch / { ref=substr($0, 8); sub(/^refs\/heads\//, "", ref) }
-          /^$/ { if (path != "") printf "%s\t%s\t%s\n", name, ref, path; path="" }
-          END { if (path != "") printf "%s\t%s\t%s\n", name, ref, path }
-        ' | fzf --with-nth=1,2 --delimiter='\t' --height 80% \
-                --header="Select a worktree to cd into. ESC to quit.")
-        [[ -n "$picked" ]] || { echo "Exit: no worktree selected"; return; }
-        cd "${picked##*$'\t'}"
-        return
+      local q="$1" list pick
+      # name <tab> branch <tab> path, one line per worktree.
+      list=$(git worktree list --porcelain | awk '
+        function base(p) { sub(/.*\//, "", p); return p }
+        /^worktree / { path=substr($0, 10); name=base(path); ref="" }
+        /^branch / { ref=substr($0, 8); sub(/^refs\/heads\//, "", ref) }
+        /^$/ { if (path != "") printf "%s\t%s\t%s\n", name, ref, path; path="" }
+        END { if (path != "") printf "%s\t%s\t%s\n", name, ref, path }
+      ')
+      if [[ -n "$q" ]]; then
+        # Exact match jumps immediately (name preferred over branch) — no fzf.
+        pick=$(printf '%s\n' "$list" | awk -F'\t' -v q="$q" '$1==q {print; exit}')
+        [[ -z "$pick" ]] && pick=$(printf '%s\n' "$list" | awk -F'\t' -v q="$q" '$2==q {print; exit}')
+        if [[ -n "$pick" ]]; then
+          cd "${pick##*$'\t'}"
+          return
+        fi
       fi
-      dir=$(git wt-find "$q") || {
-        echo "Error: no worktree found for name/branch '$q'" >&2 && return 1
+      # No exact match (or no query given): fuzzy-pick, seeded with the query.
+      # --select-1 auto-picks a unique match; --exit-0 fails cleanly on none.
+      command -v fzf >/dev/null 2>&1 || {
+        echo "Error: no worktree matching '$q' (install fzf for substring matching)" >&2
+        return 1
       }
-      cd "$dir"
+      pick=$(printf '%s\n' "$list" | fzf --with-nth=1,2 --delimiter='\t' \
+               --query="$q" --select-1 --exit-0 --height 80% \
+               --header="Select a worktree to cd into. ESC to quit.")
+      [[ -n "$pick" ]] || { echo "Exit: no worktree selected"; return; }
+      cd "${pick##*$'\t'}"
       ;;
     *)
       git worktree "$cmd" "$@"

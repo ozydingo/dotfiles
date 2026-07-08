@@ -89,18 +89,25 @@
   stash-unstaged = stash -u --keep-index
   # worktree alias
   wt = "worktree"
-  # Find a worktree's path by name (path basename) or, failing that, branch.
-  # Prints the path (empty + nonzero if none). Uses --porcelain so we match the
-  # name/branch fields exactly rather than grepping the raw output.
+  # Find a worktree's path by name (path basename), branch, or substring of
+  # either. Resolution order: exact name, exact branch, then unique substring
+  # match. Prints the path (exit 0); exit 1 if none; exit 3 if a substring is
+  # ambiguous (candidates printed to stderr). Uses --porcelain for exact fields.
   wt-find = "!f() { \
-    [ -n \"$1\" ] || { echo 'usage: git wt-find <name|branch>' >&2; return 2; }; \
+    [ -n \"$1\" ] || { echo 'usage: git wt-find <name|branch|substring>' >&2; return 2; }; \
     git worktree list --porcelain | awk -v q=\"$1\" ' \
       function base(p) { sub(/.*\\//, \"\", p); return p } \
-      /^worktree / { path=substr($0, 10); paths[++n]=path; branches[n]=\"\" } \
+      /^worktree / { path=substr($0, 10); paths[++n]=path; names[n]=base(path); branches[n]=\"\" } \
       /^branch / { ref=substr($0, 8); sub(/^refs\\/heads\\//, \"\", ref); branches[n]=ref } \
       END { \
-        for (i=1; i<=n; i++) if (base(paths[i]) == q) { print paths[i]; exit 0 } \
+        for (i=1; i<=n; i++) if (names[i] == q) { print paths[i]; exit 0 } \
         for (i=1; i<=n; i++) if (branches[i] == q) { print paths[i]; exit 0 } \
+        m=0; \
+        for (i=1; i<=n; i++) if (index(names[i], q) || index(branches[i], q)) { \
+          m++; hit=i; cand[m]=names[i] \"\\t\" branches[i] \"\\t\" paths[i] } \
+        if (m == 1) { print paths[hit]; exit 0 } \
+        if (m > 1) { print \"wt-find: ambiguous substring \\047\" q \"\\047 matches:\" > \"/dev/stderr\"; \
+          for (j=1; j<=m; j++) print \"  \" cand[j] > \"/dev/stderr\"; exit 3 } \
         exit 1 \
       }'; \
   }; f"
