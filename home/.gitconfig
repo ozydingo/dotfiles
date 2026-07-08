@@ -89,15 +89,20 @@
   stash-unstaged = stash -u --keep-index
   # worktree alias
   wt = "worktree"
-  # Find a worktree's path by branch name; prints the path (empty + nonzero if none).
-  # Uses --porcelain so we match the branch field exactly rather than grepping paths.
+  # Find a worktree's path by name (path basename) or, failing that, branch.
+  # Prints the path (empty + nonzero if none). Uses --porcelain so we match the
+  # name/branch fields exactly rather than grepping the raw output.
   wt-find = "!f() { \
-    [ -n \"$1\" ] || { echo 'usage: git wt-find <branch>' >&2; return 2; }; \
-    git worktree list --porcelain | awk -v b=\"$1\" ' \
-      /^worktree / { path=substr($0, 10) } \
-      /^branch / { ref=substr($0, 8); sub(/^refs\\/heads\\//, \"\", ref); \
-        if (ref == b) { print path; found=1; exit } } \
-      END { exit !found }'; \
+    [ -n \"$1\" ] || { echo 'usage: git wt-find <name|branch>' >&2; return 2; }; \
+    git worktree list --porcelain | awk -v q=\"$1\" ' \
+      function base(p) { sub(/.*\\//, \"\", p); return p } \
+      /^worktree / { path=substr($0, 10); paths[++n]=path; branches[n]=\"\" } \
+      /^branch / { ref=substr($0, 8); sub(/^refs\\/heads\\//, \"\", ref); branches[n]=ref } \
+      END { \
+        for (i=1; i<=n; i++) if (base(paths[i]) == q) { print paths[i]; exit 0 } \
+        for (i=1; i<=n; i++) if (branches[i] == q) { print paths[i]; exit 0 } \
+        exit 1 \
+      }'; \
   }; f"
   # (Experimental; not working) Show commit message for a given file
   match = "!f() { \

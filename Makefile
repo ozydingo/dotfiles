@@ -16,7 +16,7 @@ shell:
 		echo ""; \
 	fi
 	cp home/gitprompt $(HOME)/script/gitprompt
-	cp home/functions/ys $(HOME)/script/functions/ys
+	cp home/functions/* $(HOME)/script/functions/
 
 git:
 	cp home/.gitconfig $(HOME)/.gitconfig

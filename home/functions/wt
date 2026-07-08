@@ -1,0 +1,49 @@
+# git worktree helper with subcommands. Falls through to `git worktree` for
+# anything it doesn't handle, so `wt add`, `wt remove`, `wt prune`, ... just work.
+#   wt                    → list worktrees
+#   wt find <name|branch> → print the worktree path (name preferred; nonzero if none)
+#   wt goto [name|branch] → cd into a worktree (name preferred; fzf-pick if omitted)
+#   wt <cmd> [args]       → passthrough to `git worktree <cmd> [args]`
+function wt() {
+  if ! git rev-parse --git-dir >/dev/null 2>&1; then
+    echo "Error: not inside a git repository" >&2 && return 1
+  fi
+
+  local cmd="$1"
+  (( $# > 0 )) && shift
+
+  case "$cmd" in
+    "" | list)
+      git worktree list "$@"
+      ;;
+    find)
+      # Delegates to the git alias so the resolver stays scriptable on its own.
+      git wt-find "$@"
+      ;;
+    goto)
+      local q="$1" dir picked
+      if [[ -z "$q" ]]; then
+        command -v fzf >/dev/null 2>&1 || { echo "usage: wt goto <name|branch>" >&2; return 2; }
+        # Columns: name <tab> branch <tab> path; show name+branch, cd via the path.
+        picked=$(git worktree list --porcelain | awk '
+          function base(p) { sub(/.*\//, "", p); return p }
+          /^worktree / { path=substr($0, 10); name=base(path); ref="" }
+          /^branch / { ref=substr($0, 8); sub(/^refs\/heads\//, "", ref) }
+          /^$/ { if (path != "") printf "%s\t%s\t%s\n", name, ref, path; path="" }
+          END { if (path != "") printf "%s\t%s\t%s\n", name, ref, path }
+        ' | fzf --with-nth=1,2 --delimiter='\t' --height 80% \
+                --header="Select a worktree to cd into. ESC to quit.")
+        [[ -n "$picked" ]] || { echo "Exit: no worktree selected"; return; }
+        cd "${picked##*$'\t'}"
+        return
+      fi
+      dir=$(git wt-find "$q") || {
+        echo "Error: no worktree found for name/branch '$q'" >&2 && return 1
+      }
+      cd "$dir"
+      ;;
+    *)
+      git worktree "$cmd" "$@"
+      ;;
+  esac
+}
