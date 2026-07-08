@@ -89,6 +89,16 @@
   stash-unstaged = stash -u --keep-index
   # worktree alias
   wt = "worktree"
+  # Find a worktree's path by branch name; prints the path (empty + nonzero if none).
+  # Uses --porcelain so we match the branch field exactly rather than grepping paths.
+  wt-find = "!f() { \
+    [ -n \"$1\" ] || { echo 'usage: git wt-find <branch>' >&2; return 2; }; \
+    git worktree list --porcelain | awk -v b=\"$1\" ' \
+      /^worktree / { path=substr($0, 10) } \
+      /^branch / { ref=substr($0, 8); sub(/^refs\\/heads\\//, \"\", ref); \
+        if (ref == b) { print path; found=1; exit } } \
+      END { exit !found }'; \
+  }; f"
   # (Experimental; not working) Show commit message for a given file
   match = "!f() { \
               echo "WARNING: match is experimental and not quite working" >&2; \
