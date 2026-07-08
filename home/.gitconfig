@@ -18,6 +18,14 @@
   cb = "!git --no-pager branch --format='%(refname:short)' "
   # Show current head
   head = "rev-parse --abbrev-ref HEAD"
+  # Compare the branch's diff with the diff on origin (useful for post-rebase confirmation)
+  doublediff = "!f() { \
+      l=$(mktemp) o=$(mktemp); \
+      git diff main...HEAD > \"$l\"; \
+      git diff main...origin/$(git head) > \"$o\"; \
+      diff \"$l\" \"$o\"; \
+      rm \"$l\" \"$o\"; \
+  }; f"
   # Simplified log
   l = log --date=format:'%Y-%m-%d %H:%M' --pretty=format:\"%Cred%h%Creset %Cgreen%cd %C(blue)%<(24)%an%Creset %s %C(magenta)%d%Creset\" --abbrev-commit
   # Recent commits with simplified log format
