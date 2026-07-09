@@ -59,7 +59,7 @@
               git pull; \
               git clean-branches; \
             }; f"
-  clear = "!f() { git fresh; clear; }; f"
+  so-fresh = "!f() { git fresh; clear; }; f"
   # Clean up branches that are gone from remote (leaves local-only branches)
   clean-branches = "!f() { \
         git fetch -p && \
